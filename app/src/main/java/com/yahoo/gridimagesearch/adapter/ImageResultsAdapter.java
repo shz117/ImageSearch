@@ -25,13 +25,18 @@ public class ImageResultsAdapter extends ArrayAdapter<ImageResult>{
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ImageResult imageInfo = getItem(position);
+//        float ratio = imageInfo.tbWidth / imageInfo.tbHeight;
 
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_image_result, parent, false);
         }
+//        int cellHeight = parent.getLayoutParams().height / 3;
+//        int cellWidth = Math.round(cellHeight * ratio);
         ImageView ivImage = (ImageView) convertView.findViewById(R.id.ivImage);
+//        ivImage.setMinimumWidth(cellWidth);
+//        ivImage.setMinimumHeight(cellHeight);
         ivImage.setImageResource(0);
-        Picasso.with(getContext()).load(imageInfo.thumbUrl).into(ivImage);
+        Picasso.with(getContext()).load(imageInfo.thumbUrl).placeholder(R.drawable.placeholder).into(ivImage);
         return convertView;
     }
 }

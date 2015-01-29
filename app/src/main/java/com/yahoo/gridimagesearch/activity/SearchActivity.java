@@ -18,6 +18,7 @@ import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.yahoo.gridimagesearch.R;
 import com.yahoo.gridimagesearch.adapter.ImageResultsAdapter;
+import com.yahoo.gridimagesearch.lib.EndlessScrollListener;
 import com.yahoo.gridimagesearch.model.ImageResult;
 
 import org.apache.http.Header;
@@ -36,15 +37,24 @@ public class SearchActivity extends Activity {
     private AsyncHttpClient client;
     private ArrayList<ImageResult> imageResults;
     private ImageResultsAdapter aImageResults;
+    private int cursor = 0;
 
     private void setViews() {
         gvResutls = (GridView) findViewById(R.id.gvResults);
         etQuery = (EditText) findViewById(R.id.etQuery);
+
+        gvResutls.setOnScrollListener(new EndlessScrollListener() {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount) {
+                performSearch(true);
+            }
+        });
+
         etQuery.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    performSearch();
+                    performSearch(false);
                     v.clearFocus();
                     return true;
                 }
@@ -70,9 +80,6 @@ public class SearchActivity extends Activity {
                 Intent i = new Intent(SearchActivity.this, ImageDisplayActivity.class);
                 ImageResult result = imageResults.get(position);
                 i.putExtra("result", result);
-                i.putExtra("url", result.fullUrl);
-                i.putExtra("height", result.height);
-                i.putExtra("width", result.width);
                 startActivity(i);
             }
         });
@@ -80,12 +87,13 @@ public class SearchActivity extends Activity {
 
 
 
-    public void performSearch() {
+    public void performSearch(final boolean loadmore) {
         Log.i("INFO", "performing search!");
         String query = etQuery.getText().toString();
         imm.hideSoftInputFromWindow(etQuery.getWindowToken(), 0);
         // https://ajax.googleapis.com/ajax/services/search/images?v=1.0&q=android
-        String searchUrl = "https://ajax.googleapis.com/ajax/services/search/images?v=1.0&q=" + query + "&rsz=8";
+        final String searchUrl = "https://ajax.googleapis.com/ajax/services/search/images?v=1.0&q=" + query + "&rsz=8" + "&start=" + String.valueOf(cursor);
+        cursor += 8;
         client.get(searchUrl, new JsonHttpResponseHandler() {
 
             @Override
@@ -93,12 +101,23 @@ public class SearchActivity extends Activity {
                 JSONArray imageResultsJSON = null;
                 try {
                     imageResultsJSON = response.getJSONObject("responseData").getJSONArray("results");
-                    imageResults.clear();
+                    if (!loadmore) {
+                        imageResults.clear();
+                        cursor = 0;
+                    }
                     aImageResults.addAll(ImageResult.fromJSONArray(imageResultsJSON));
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
         });
+    }
+
+    public void onAdvBtnClick(View view) {
+        Intent toAdvSearch = new Intent(SearchActivity.this, AdvConfigActivity.class);
+//        toAdvSearch.putExtra("cur_content", items.get(pos));
+//        toAdvSearch.putExtra("pos", pos);
+//        startActivityForResult(toEditItem, EDIT_ITEM_REQUEST);
+
     }
 }

@@ -9,11 +9,11 @@
         android:layout_height="wrap_content"
         android:id="@+id/etQuery"
         android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:inputType="text" />
+        android:inputType="text"
+        android:layout_toRightOf="@+id/imageButton"
+        android:layout_toEndOf="@+id/imageButton" />
 
     <GridView
         android:layout_width="wrap_content"
@@ -25,6 +25,20 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:numColumns="3" />
+        android:numColumns="3"
+        android:gravity="center_horizontal"
+        android:layout_centerInParent="true"
+        android:layout_margin="10dp" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/ibtnAdv"
+        android:onClick="onAdvBtnClick"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:src="@drawable/ic_action_name"
+        android:layout_alignBottom="@+id/etQuery" />
 
 </RelativeLayout>

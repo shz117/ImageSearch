@@ -18,6 +18,8 @@ public class ImageResult implements Parcelable {
     public String title;
     public int width;
     public int height;
+    public int tbWidth;
+    public int tbHeight;
 
     public ImageResult (JSONObject json) {
         try {
@@ -26,6 +28,8 @@ public class ImageResult implements Parcelable {
             this.title = json.getString("title");
             this.width = json.getInt("width");
             this.height = json.getInt("height");
+            this.tbHeight = json.getInt("tbHeight");
+            this.tbWidth = json.getInt("tbWidth");
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -43,6 +47,14 @@ public class ImageResult implements Parcelable {
         return res;
     }
 
+    protected ImageResult(Parcel in) {
+        fullUrl = in.readString();
+        thumbUrl = in.readString();
+        title = in.readString();
+        width = in.readInt();
+        height = in.readInt();
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -50,6 +62,23 @@ public class ImageResult implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-
+        dest.writeString(fullUrl);
+        dest.writeString(thumbUrl);
+        dest.writeString(title);
+        dest.writeInt(width);
+        dest.writeInt(height);
     }
+
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<ImageResult> CREATOR = new Parcelable.Creator<ImageResult>() {
+        @Override
+        public ImageResult createFromParcel(Parcel in) {
+            return new ImageResult(in);
+        }
+
+        @Override
+        public ImageResult[] newArray(int size) {
+            return new ImageResult[size];
+        }
+    };
 }

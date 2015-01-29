@@ -3,10 +3,11 @@
     android:layout_width="match_parent" android:layout_height="match_parent">
 
     <ImageView
-        android:layout_width="75dp"
-        android:layout_height="75dp"
+        android:layout_width="140dp"
+        android:layout_height="160dp"
         android:contentDescription="Image Result"
-        android:scaleType="fitXY"
-        android:adjustViewBounds="true"
-        android:id="@+id/ivImage" />
+        android:scaleType="centerCrop"
+        android:id="@+id/ivImage"
+        android:cropToPadding="true"
+        android:padding="5dp" />
 </LinearLayout>

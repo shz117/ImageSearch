@@ -26,6 +26,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.yahoo.gridimagesearch.activity.SearchActivity" />
         </activity>
+        <activity
+            android:name=".activity.AdvConfigActivity"
+            android:label="@string/title_activity_adv_config" >
+        </activity>
     </application>
 
 </manifest>
