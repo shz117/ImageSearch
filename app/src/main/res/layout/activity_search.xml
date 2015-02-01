@@ -12,8 +12,8 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:inputType="text"
-        android:layout_toRightOf="@+id/imageButton"
-        android:layout_toEndOf="@+id/imageButton" />
+        android:layout_toEndOf="@+id/ibtnAdv"
+        android:layout_toRightOf="@+id/ibtnAdv" />
 
     <GridView
         android:layout_width="wrap_content"

@@ -19,6 +19,7 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 import com.yahoo.gridimagesearch.R;
 import com.yahoo.gridimagesearch.adapter.ImageResultsAdapter;
 import com.yahoo.gridimagesearch.lib.EndlessScrollListener;
+import com.yahoo.gridimagesearch.model.SearchUrlConfig;
 import com.yahoo.gridimagesearch.model.ImageResult;
 
 import org.apache.http.Header;
@@ -37,7 +38,9 @@ public class SearchActivity extends Activity {
     private AsyncHttpClient client;
     private ArrayList<ImageResult> imageResults;
     private ImageResultsAdapter aImageResults;
-    private int cursor = 0;
+    private SearchUrlConfig cfg = new SearchUrlConfig();
+
+    public int ADV_CFG_REQ = 20;
 
     private void setViews() {
         gvResutls = (GridView) findViewById(R.id.gvResults);
@@ -90,10 +93,9 @@ public class SearchActivity extends Activity {
     public void performSearch(final boolean loadmore) {
         Log.i("INFO", "performing search!");
         String query = etQuery.getText().toString();
+        cfg.q = query;
         imm.hideSoftInputFromWindow(etQuery.getWindowToken(), 0);
-        // https://ajax.googleapis.com/ajax/services/search/images?v=1.0&q=android
-        final String searchUrl = "https://ajax.googleapis.com/ajax/services/search/images?v=1.0&q=" + query + "&rsz=8" + "&start=" + String.valueOf(cursor);
-        cursor += 8;
+        String searchUrl = cfg.getUrl();
         client.get(searchUrl, new JsonHttpResponseHandler() {
 
             @Override
@@ -103,7 +105,7 @@ public class SearchActivity extends Activity {
                     imageResultsJSON = response.getJSONObject("responseData").getJSONArray("results");
                     if (!loadmore) {
                         imageResults.clear();
-                        cursor = 0;
+                        cfg.cursor = 0;
                     }
                     aImageResults.addAll(ImageResult.fromJSONArray(imageResultsJSON));
                 } catch (JSONException e) {
@@ -115,9 +117,16 @@ public class SearchActivity extends Activity {
 
     public void onAdvBtnClick(View view) {
         Intent toAdvSearch = new Intent(SearchActivity.this, AdvConfigActivity.class);
-//        toAdvSearch.putExtra("cur_content", items.get(pos));
-//        toAdvSearch.putExtra("pos", pos);
-//        startActivityForResult(toEditItem, EDIT_ITEM_REQUEST);
+        startActivityForResult(toAdvSearch, ADV_CFG_REQ);
+    }
 
+    protected void onActivityResult(int reqCode, int resCode, Intent data) {
+        if (resCode == RESULT_OK && reqCode == ADV_CFG_REQ) {
+            cfg.cursor = 0;
+            cfg.imageColor = data.getStringExtra("color");
+            cfg.imageSize = data.getStringExtra("size");
+            cfg.imageType = data.getStringExtra("type");
+        }
+        performSearch(false);
     }
 }
