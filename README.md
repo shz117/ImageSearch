@@ -1,7 +1,7 @@
 
 This is an Android application to search and display images using Google Image Search APIs.
 
-Time spent: 5 + x hours spent in total
+Time spent: 6 hours spent in total
 
 Completed user stories:
  * [x] User can enter a search query that will display a grid of image results from the Google Image API.
