@@ -28,4 +28,4 @@ The following advanced user stories:
 
 Walkthrough of all user stories:
 
-![Video Walkthrough](user_story_demo.gif)
+![Video Walkthrough](demo.gif)
