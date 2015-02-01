@@ -39,11 +39,9 @@ public class ImageDisplayActivity extends Activity {
         ImageView ivImageResult = (ImageView) findViewById(R.id.ivImageResult);
         TextView tvTitle = (TextView) findViewById(R.id.tvTitle);
         tvTitle.setText(Html.fromHtml(title));
-        float ratio = height / width;
-        DisplayMetrics displayMetrics;
-        displayMetrics = this.getResources().getDisplayMetrics();
-        int viewHeight = Math.round(ratio * displayMetrics.widthPixels);
-        ivImageResult.setMinimumWidth(displayMetrics.widthPixels);
+        float ratio = (float) height / (float) width;
+        int viewWidth = ivImageResult.getMeasuredWidth();
+        int viewHeight = Math.round(ratio * viewWidth);
         ivImageResult.setMinimumHeight(viewHeight);
         ivImageResult.setImageResource(0);
         Picasso.with(this).load(ulr).into(ivImageResult);

@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.TextView;
 
+import com.etsy.android.grid.StaggeredGridView;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.yahoo.gridimagesearch.R;
@@ -33,7 +34,7 @@ import java.util.ArrayList;
 public class SearchActivity extends Activity {
 
     private EditText etQuery;
-    private GridView gvResutls;
+    private StaggeredGridView gvResutls;
     private InputMethodManager imm;
     private AsyncHttpClient client;
     private ArrayList<ImageResult> imageResults;
@@ -43,7 +44,7 @@ public class SearchActivity extends Activity {
     public int ADV_CFG_REQ = 20;
 
     private void setViews() {
-        gvResutls = (GridView) findViewById(R.id.gvResults);
+        gvResutls = (StaggeredGridView) findViewById(R.id.gvResults);
         etQuery = (EditText) findViewById(R.id.etQuery);
 
         gvResutls.setOnScrollListener(new EndlessScrollListener() {

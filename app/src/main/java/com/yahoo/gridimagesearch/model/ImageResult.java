@@ -53,6 +53,8 @@ public class ImageResult implements Parcelable {
         title = in.readString();
         width = in.readInt();
         height = in.readInt();
+        tbHeight = in.readInt();
+        tbWidth = in.readInt();
     }
 
     @Override
@@ -67,6 +69,8 @@ public class ImageResult implements Parcelable {
         dest.writeString(title);
         dest.writeInt(width);
         dest.writeInt(height);
+        dest.writeInt(tbHeight);
+        dest.writeInt(tbWidth);
     }
 
     @SuppressWarnings("unused")
